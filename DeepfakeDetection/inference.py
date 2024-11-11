@@ -91,11 +91,9 @@ def process_audio_and_predict(file_path):
     # Use the loaded model to predict classes
     predictions = model_our_HVoice_SiF_Filtered.predict(resized_images)
 
-    # Output predictions
-    class_labels = ['fake', 'real']
-    for i, prediction in enumerate(predictions):
-        predicted_class_label = class_labels[int(prediction[0])]
-        print(f'{image_paths[i]} --- Predict: {predicted_class_label}')
+    # Output predictions (returning 1 or 0 instead of printing)
+    predicted_class = int(predictions[0][0])  # Get the predicted class (0 or 1)
+    return predicted_class  # Return the prediction (1 for real, 0 for fake)
 
 # Main function to handle audio file path input
 if __name__ == "__main__":
@@ -107,5 +105,9 @@ if __name__ == "__main__":
     audio_file_path = sys.argv[1]  # Get the audio file path from the command line argument
     print(f"Processing audio file: {audio_file_path}")
     
-    # Call the function to process the audio file and make prediction
-    process_audio_and_predict(audio_file_path)
+    # Call the function to process the audio file and get prediction
+    prediction = process_audio_and_predict(audio_file_path)
+
+    # Return the result to the calling process (1 for real, 0 for fake)
+    print(f"Prediction result: {'real' if prediction == 1 else 'fake'}")
+    sys.exit(prediction)  # Exit with 1 for real and 0 for fake
