@@ -39,7 +39,7 @@ def create_cnn_model(input_shape, num_classes):
     return model
 
 # Model params 
-input_shape = (150, 150, 3)
+input_shape = (150, 150, 1)  # Change to single channel (grayscale)
 num_classes = 1  # Number of outputs per input
 
 # Initialize model
@@ -78,7 +78,8 @@ train_generator_HVoice_SiF_Filtered = train_datagen.flow_from_directory(
     train_dir,
     target_size=(150, 150),
     batch_size=32,
-    class_mode='binary'
+    class_mode='binary',
+    color_mode='grayscale'  # Load images in grayscale
 )
 
 logger.info('Loading validation data...')
@@ -86,7 +87,8 @@ valid_generator_HVoice_SiF_Filtered = valid_datagen.flow_from_directory(
     validation_dir,
     target_size=(150, 150),
     batch_size=32,
-    class_mode='binary'
+    class_mode='binary',
+    color_mode='grayscale'  # Load images in grayscale
 )
 
 logger.info('Loading test data...')
@@ -94,7 +96,8 @@ test_generator_HVoice_SiF_Filtered = test_datagen.flow_from_directory(
     test_dir,
     target_size=(150, 150),
     batch_size=32,
-    class_mode='binary'
+    class_mode='binary',
+    color_mode='grayscale'  # Load images in grayscale
 )
 
 # Training the model with early stopping and CSV logging
