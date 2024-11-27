@@ -45,7 +45,7 @@ Ensure you have the following installed:
    ```
    
 
-2. ** Set Up a Virtual Environment**
+2. **Set Up a Virtual Environment**
   ```bash
   python -m venv venv  
   source venv/bin/activate  # On Windows: venv\Scripts\activate
