@@ -38,11 +38,32 @@ Ensure you have the following installed:
 
 ### Step-by-Step Guide  
 
-1. **Clone the Repository**  
-   Clone the project repository from GitHub:  
+1. **Clone the Repository**   
    ```bash
-   git clone https://github.com/your-organization/voice-authentication-research.git
+   git clone https://github.com/ananyakaligal/Voice-Authentication.git
    cd voice-authentication-research
-
+   ```
    
+
+2. **Set Up a Virtual Environment**
+   ```bash
+   python -m venv venv  
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+
+3. **Install Dependencies**  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Start the System**  
+   ```bash
+   python main.py
+   ```
+
+---
+
+
+
 
