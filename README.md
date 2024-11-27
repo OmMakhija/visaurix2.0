@@ -98,7 +98,6 @@ We appreciate all contributions, whether they be bug fixes, new features, docume
 ---
 
 ## License  
-## License  
 This project is licensed under the MIT License - see the [LICENSE file](./LICENSE) for details.
 
 
