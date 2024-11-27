@@ -62,7 +62,7 @@ Ensure you have the following installed:
    python main.py
    ```
 
-   ![Screenshot](Images/Screenshot 1.png)
+   ![Screenshot](Images/Screenshot1.png)
    ![Screenshot](Images/Screenshot.png)
 
 ---
