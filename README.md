@@ -1,54 +1,48 @@
-# Secure Voice Authentication: Deepfake Detection & Speaker Verification  
+# Enhancing Voice Authentication Security: A Hybrid Approach Using GMM-UBM and Deep4SNet for Deepfake Detection
 
-## 🔬 Research Overview  
-This system addresses the critical challenge of synthetic audio attacks by integrating advanced deepfake detection and speaker verification technologies. Developed by researchers at RV University, it ensures robust voice security with high accuracy and real-time efficiency.  
-
----
-
-## 📋 Highlights  
-- **Deepfake Detection Accuracy**: 90.25%  
-- **Speaker Verification Accuracy**: 100% for enrolled users  
-- **Real-Time Performance**: Low computational overhead  
-- **Hybrid Approach**: Combines deep learning and traditional methods  
+## Overview  
+This project introduces a robust voice authentication system designed to counter synthetic audio attacks. By integrating advanced deepfake detection and speaker verification technologies, it ensures high accuracy, real-time performance, and scalability for applications like secure banking, smart devices, and access control systems.  
 
 ---
 
-## 🧠 Technical Architecture  
+## Features  
+- **Dual-Stage Security**:  
+  - Combines deepfake detection and speaker verification for enhanced reliability.  
+- **High Detection Accuracy**:  
+  - Deepfake Detection: 90.25% accuracy against synthetic audio attacks.  
+  - Speaker Verification: 100% accuracy for enrolled users with zero false acceptances.  
+- **Real-Time Processing**: Low computational overhead, ensuring seamless integration with various systems.  
+- **Scalability**: Easily adaptable to a wide range of applications and environments.  
+
+---
+
+## Technical Architecture  
 
 ### Dual-Stage Security Framework  
 1. **Deepfake Detection**  
-   - Neural Network: **Deep4SNet**  
-   - Features: Spectrogram analysis for real vs. fake classification  
+   - **Model**: **Deep4SNet**, a specialized neural network for identifying synthetic audio.  
+   - **Features**: Spectrogram-based analysis for binary classification (real vs. fake audio).  
 
 2. **Speaker Verification**  
-   - Model: **GMM-UBM (Gaussian Mixture Model - Universal Background Model)**  
-   - Features: **MFCC (Mel-Frequency Cepstral Coefficients)**  
+   - **Model**: **GMM-UBM (Gaussian Mixture Model - Universal Background Model)**.  
+   - **Features**: **MFCC (Mel-Frequency Cepstral Coefficients)** extraction to create robust, speaker-specific models.  
 
 ---
 
-## 🔢 Performance Metrics  
+## Installation  
 
-### Deepfake Detection  
-- **Samples Analyzed**: 1,426  
-  - Real: 668, Fake: 758  
-- **Results**:  
-  - Real Voices Identified: 633  
-  - Fake Voices Identified: 654  
-- **Metrics**:  
-  - Accuracy: 90.25%  
-  - Precision: 94.92%  
-  - Recall: 86.28%  
+### Prerequisites  
+Ensure you have the following installed:  
+- **Python**: Version 3.8 or higher.  
+- **Libraries**: Refer to the `requirements.txt` file for all dependencies.  
 
-### Speaker Verification  
-- **User Accuracy**: 100%  
-- **False Acceptances**: 0  
-- **Robustness**: Consistent across multiple tests  
+### Step-by-Step Guide  
 
----
-
-## 📦 Installation  
-
-1. Clone the repository:  
+1. **Clone the Repository**  
+   Clone the project repository from GitHub:  
    ```bash
    git clone https://github.com/your-organization/voice-authentication-research.git
    cd voice-authentication-research
+
+   
+
