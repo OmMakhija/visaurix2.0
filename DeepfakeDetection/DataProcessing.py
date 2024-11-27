@@ -41,7 +41,6 @@ def filter_audio(audio_data, cutoff_frequency, sr):
     Returns:
         np.ndarray: Filtered audio data.
     """
-    # Ensure cutoff_frequency is a float
     cutoff_frequency = float(cutoff_frequency)
     
     nyquist_frequency = sr / 2

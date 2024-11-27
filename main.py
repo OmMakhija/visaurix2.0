@@ -1,3 +1,4 @@
+
 import os
 import logging
 from register_user import record_audio_for_user  # Importing the record_audio_for_user function
@@ -136,7 +137,7 @@ def login(user_name):
             print(f"Log-Likelihood: {log_likelihood}")
             
             threshold = np.percentile(known_log_likelihoods, 90)
-            threshold += 10.0  # Adding margin
+            threshold += 6.0  # Adding margin
             
             print(f"Dynamic Threshold: {threshold}")
             

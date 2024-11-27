@@ -16,7 +16,7 @@ import gc
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class SpectrogramDataset(Dataset):
+class HistogramsDataset(Dataset):
     def __init__(self, root_dir, dataset_type='Training_Set', custom_transform=None):
         self.root_dir = Path(root_dir)
         
@@ -27,7 +27,7 @@ class SpectrogramDataset(Dataset):
         self.dataset_dir = self.root_dir / dataset_type
         logger.info(f"Loading dataset from: {self.dataset_dir}")
         
-        # Use provided transform or default transform
+        # Define image transformations (default or custom)
         self.transform = custom_transform or transforms.Compose([
             transforms.Resize((128, 128)),
             transforms.Grayscale(num_output_channels=1),
@@ -84,6 +84,7 @@ class SpectrogramDataset(Dataset):
             raise ValueError(f"No valid images found in {dataset_type} directory")
 
     def _is_valid_image(self, file_path):
+        # Check if the image file is valid
         try:
             with Image.open(file_path) as img:
                 img.verify()
@@ -201,9 +202,9 @@ def train_model():
     data_root = "../hub/Voice-Authentication/DeepfakeDetection/Data/H-Voice_SiF-Filtered"
     
     # Create datasets with appropriate transforms
-    train_dataset = SpectrogramDataset(root_dir=data_root, dataset_type='Training_Set', custom_transform=train_transform)
-    val_dataset = SpectrogramDataset(root_dir=data_root, dataset_type='Validation_Set', custom_transform=val_transform)
-    test_dataset = SpectrogramDataset(root_dir=data_root, dataset_type='Test_Set', custom_transform=val_transform)
+    train_dataset = HistogramsDataset(root_dir=data_root, dataset_type='Training_Set', custom_transform=train_transform)
+    val_dataset = HistogramsDataset(root_dir=data_root, dataset_type='Validation_Set', custom_transform=val_transform)
+    test_dataset = HistogramsDataset(root_dir=data_root, dataset_type='Test_Set', custom_transform=val_transform)
     
     # Create dataloaders
     train_loader = DataLoader(
