@@ -43,6 +43,13 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/your-organization/voice-authentication-research.git
    cd voice-authentication-research
+  
+2.**Install Dependencies**
+  Install the required libraries using the requirements.txt file:
+  ```bash
+   pip install -r requirements.txt
 
-   
-
+3.**Run the System**
+  Start the voice authentication system by running the main script:
+  ```bash
+  python main.py 
