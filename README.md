@@ -61,7 +61,8 @@ Ensure you have the following installed:
    ```bash
    python main.py
    ```
-(Images/Screenshot.png)
+![Screenshot](Images/Screenshot.png)
+
 ---
 
 
