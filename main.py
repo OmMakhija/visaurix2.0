@@ -1,177 +1,190 @@
-
 import os
 import logging
-from register_user import record_audio_for_user  # Importing the record_audio_for_user function
-from voiceauth.gmm import load_features_from_directory, train_gmm, save_gmm_model
-import sounddevice as sd
+import traceback
+import json
 import numpy as np
+import sounddevice as sd
 import wavio
-from DeepfakeDetection.DataProcessing import process_audio
-from DeepfakeDetection.run_record import DeepfakeDetector
-from DeepfakeDetection.train import Deep4SNet
 import joblib
 from scipy.io import wavfile
-from voiceauth.feature_extraction import extract_features
 
+from register_user import record_audio_for_user
+from voiceauth.gmm import load_features_from_directory, train_gmm, save_gmm_model
+from voiceauth.feature_extraction import extract_features
+from DeepfakeDetection.DataProcessing import process_audio
+from DeepfakeDetection.run_record import DeepfakeDetector
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+THRESHOLD_FILE = os.path.join(BASE_DIR, 'voiceauth', 'model', 'thresholds.json')
+
+# Setup logging
+logging.basicConfig(
+    filename=os.path.join(BASE_DIR, "debug.log"),
+    filemode="a",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+def load_thresholds():
+    if os.path.exists(THRESHOLD_FILE):
+        with open(THRESHOLD_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_threshold(username, threshold):
+    thresholds = load_thresholds()
+    thresholds[username] = threshold
+    with open(THRESHOLD_FILE, 'w') as f:
+        json.dump(thresholds, f)
+
+def load_all_gmm_models(model_directory):
+    models = {}
+    for file in os.listdir(model_directory):
+        if file.endswith(".gmm"):
+            username = os.path.splitext(file)[0]
+            model_path = os.path.join(model_directory, file)
+            try:
+                gmm = joblib.load(model_path)
+                models[username] = gmm
+            except Exception as e:
+                logging.error(f"Failed to load GMM for {username}: {e}")
+    return models
 
 def sign_up(username):
-    """
-    Sign up a new user by recording their audio, extracting features, training a GMM model, and saving it.
-    """
-    print(f"Starting sign up for {username}...")
-
+    logging.info(f"Starting sign up for user: {username}")
     try:
-        # Record and save audio samples in a specified directory for the user
         print("Recording audio for user...")
-        audio_directory = record_audio_for_user(username)  # Ensure this function is defined
-        print(f"Audio recorded and saved in directory: {audio_directory}")
-        
-        # Define the paths for UBM and where to save the GMM model
-        ubm_model_path = r'D:/DeepLearning-Project (virtual-env)/voiceauth/model/ubm_model.pkl'  # Replace with actual path to your UBM model
-        model_save_directory = r'D:/DeepLearning-Project (virtual-env)/voiceauth/model'
-        os.makedirs(model_save_directory, exist_ok=True)  # Create directory if it doesn't exist
-        gmm_model_save_path = os.path.join(model_save_directory, f"{username}.gmm")  # Path where GMM will be saved
-        print(f"GMM model will be saved to: {gmm_model_save_path}")
+        audio_directory = record_audio_for_user(username)
 
-        # Number of components for GMM
-        n_components = 32  # Adjust as needed
-        print(f"Number of components for GMM: {n_components}")
-        
-        # Load features from the audio directory
-        print(f"Loading features from directory: {audio_directory}")
+        ubm_model_path = os.path.join(BASE_DIR, 'voiceauth', 'model', 'ubm_model.pkl')
+        model_save_directory = os.path.join(BASE_DIR, 'voiceauth', 'model')
+        os.makedirs(model_save_directory, exist_ok=True)
+        gmm_model_save_path = os.path.join(model_save_directory, f"{username}.gmm")
+
         features = load_features_from_directory(audio_directory)
-        print(f"Features loaded. Number of features: {features.shape[0]}")
-        
+
         if features.size == 0:
-            print("No valid features extracted. Please check your audio recordings.")
+            logging.warning("No valid features extracted.")
             return
-        
-        # Train a GMM using the extracted features and UBM model
-        print(f"Training GMM model with {n_components} components...")
-        gmm_model = train_gmm(features, ubm_model_path, n_components)
-        print("GMM model trained successfully.")
-        
-        # Save the trained GMM model with the username
-        print(f"Saving the trained GMM model to: {gmm_model_save_path}")
+
+        gmm_model = train_gmm(features, ubm_model_path, n_components=32)
         save_gmm_model(gmm_model, gmm_model_save_path)
-        print(f"Model saved successfully for user: {username}")
-        
+
+        user_threshold = np.percentile(gmm_model.score_samples(features), 10)
+        save_threshold(username, float(user_threshold))
+        logging.info(f"Threshold saved for user {username}: {user_threshold}")
+
+        print("User registration and voice model training complete.")
     except Exception as e:
-        print(f"An error occurred during the sign-up process: {e}")
-        logging.error(f"Error during sign up for {username}: {e}")
-        import traceback
-        traceback.print_exc()  # Print full traceback to debug where the error occurred
+        logging.error(f"Error in sign_up for {username}: {e}")
+        logging.debug(traceback.format_exc())
+        print("An error occurred during sign-up.")
 
-def login(user_name):
-    """
-    Login an existing user by recording their audio and checking it against the stored GMM model.
-    """
-    # Create a directory named after the user
-    user_dir = os.path.join("recordings", user_name)
+def login():
+    logging.info("Starting login process.")
+
+    user_dir = os.path.join(BASE_DIR, "recordings", "login_attempt")
     os.makedirs(user_dir, exist_ok=True)
+    output_file = os.path.join(user_dir, "login_recording.wav")
 
-    # File path for the audio recording
-    output_file = os.path.join(user_dir, f"{user_name}_recording.wav")
-
-    # Sentence for the user to read
     print("Please read the following sentence clearly: ")
     print("\n\"Technology has transformed the way we communicate, learn, and interact with the world. "
           "From smartphones to artificial intelligence, it shapes our daily lives and influences our decisions.\"\n")
 
-    # Prompt user to start recording
     input("Press Enter to start recording...")
-
-    # Recording settings
     sample_rate = 44100
-
-    # Start recording
-    print("Recording... Press Enter again to stop.")
+    print("Recording...")
     recording = sd.rec(int(10 * sample_rate), samplerate=sample_rate, channels=1, dtype='float32')
     sd.wait()
+    input("Recording complete. Press Enter to save...")
 
-    # Allow user to stop recording
-    input("Recording stopped. Press Enter to save the recording...")
+    try:
+        wavio.write(output_file, recording, sample_rate, sampwidth=4)
+        logging.debug(f"Recording saved at: {output_file}")
+    except Exception as e:
+        logging.error(f"Error saving recording: {e}")
+        return
 
-    # Save the recording as a .wav file in the user's directory
-    wavio.write(output_file, recording, sample_rate, sampwidth=4)
-    print("Recording saved.")
+    try:
+        histogram_path = process_audio(output_file, cutoff_frequency=4000, output_dir=user_dir)
+        detector = DeepfakeDetector(os.path.join(BASE_DIR, 'DeepfakeDetection', 'models', 'best_model.pth'))
+        result = detector.predict_single(histogram_path)
+    except Exception as e:
+        logging.error(f"Deepfake detection error: {e}")
+        return
 
-    # AUTOMATICALLY SETTING THE CUTOFF FREQUENCY
-    cutoff_frequency = 4000  # Fixed cutoff frequency (in Hz) for low-pass filter
+    if result and result['prediction'] == 'REAL':
+        print("deepfake: no")
+    else:
+        print("deepfake: yes")
 
-    # Call the process_audio function to process the saved recording and get the histogram path
-    print("Processing the recorded audio for prediction...")
+    if result and result['prediction'] == 'REAL':
+        print("✅ Voice passed deepfake check.")
 
-    # Assuming the function `process_audio` returns the path to the histogram
-    histogram_path = process_audio(output_file, cutoff_frequency=cutoff_frequency, output_dir=user_dir)
-
-    # Print the histogram path
-    print(f"Histogram for the recorded audio saved at: {histogram_path}")
-
-    # Initialize the DeepfakeDetector
-    detector = DeepfakeDetector(r"D:/DeepLearning-Project (virtual-env)/DeepfakeDetection/models/best_model.pth")
-    
-    # Predict using the generated histogram image
-    result = detector.predict_single(histogram_path)
-    
-    if result:
-        print(f"\nDeepfake Detection Results for {histogram_path}:")
-        print(f"Prediction: {result['prediction']}")
-        print(f"Confidence: {result['confidence']:.2f}%")
-        print(f"Probability of Real: {result['probabilities']['real']:.2f}%")
-        print(f"Probability of Fake: {result['probabilities']['fake']:.2f}%")
-        
-        # Check if it's a real or fake voice and return 1 or print failure message
-        if result['prediction'] == 'REAL':
-            model_path = os.path.join(r'D:/DeepLearning-Project (virtual-env)/voiceauth/model', f"{user_name}.gmm")  # Corrected model path
-            
-            # Known log-likelihoods from authentication samples
-            known_log_likelihoods = [-36.5, -35.8, -37.2]  # Add more known values here based on your training data
-            
-            gmm_model = joblib.load(model_path)
-            rate, audio = wavfile.read(output_file)  # Use the actual recorded file path
+        try:
+            rate, audio = wavfile.read(output_file)
             features = extract_features(audio, rate)
-            
-            log_likelihood = gmm_model.score(features)
-            
-            print(f"Log-Likelihood: {log_likelihood}")
-            
-            threshold = np.percentile(known_log_likelihoods, 90)
-            threshold += 6.0  # Adding margin
-            
-            print(f"Dynamic Threshold: {threshold}")
-            
-            if log_likelihood > threshold:
-                print("Authentication Successful")
-                return True
+
+            if features is None or len(features) == 0:
+                logging.warning("Extracted features are empty or None.")
+                print("❌ Error: Feature extraction failed.")
+                return
+
+            models = load_all_gmm_models(os.path.join(BASE_DIR, 'voiceauth', 'model'))
+            thresholds = load_thresholds()
+
+            scores = {}
+            for user, gmm in models.items():
+                try:
+                    score = gmm.score(features)
+                    scores[user] = score
+                except Exception as e:
+                    logging.warning(f"Failed to score with {user}'s model: {e}")
+
+            if not scores:
+                print("❌ No valid models to compare.")
+                return
+
+            best_user = max(scores, key=scores.get)
+            best_score = scores[best_user]
+            user_threshold = thresholds.get(best_user, -9999)
+
+            print(f"[DEBUG] Best match: {best_user} (score: {best_score}, threshold: {user_threshold})")
+
+            if best_score > user_threshold:
+                print(f"✅ Speaker identified as: {best_user}")
+                logging.info(f"Speaker identified as: {best_user}")
+                return best_user
             else:
-                print("Authentication Failed")
-                return False
-            
-        else:
-            print("Cloned voice, authentication failed.")
+                print("❌ Speaker not recognized. Voice does not match any user.")
+                logging.warning("Speaker recognition failed.")
+                return None
+
+        except Exception as e:
+            logging.error(f"Voice authentication error: {e}")
+            logging.debug(traceback.format_exc())
+            print("❌ Authentication process failed.")
+    else:
+        print("❌ Deepfake voice detected. Login denied.")
+        logging.warning("Deepfake voice detected.")
 
 def main():
-    """Prompt user for signup or login."""
-    action = input("Choose an option:\n1. Sign Up\n2. Login\nEnter 1 or 2: ").strip()
+    print("Welcome to the Secure Voice Authentication System.")
+    logging.info("Program started.")
 
-    if action == "1":
-        username = input("Enter your username to sign up: ").strip()
-        print(f"Attempting to sign up with username: {username}")
-        sign_up(username)
-    elif action == "2":
-        username = input("Enter your username to sign up: ").strip()
-        # Check if the GMM model exists for the username
-        gmm_model_path = os.path.join(r'D:/DeepLearning-Project (virtual-env)/voiceauth/model', f"{username}.gmm")
-        
-        if os.path.exists(gmm_model_path):
-            login(username)
+    try:
+        choice = input("Choose an option:\n1. Sign Up\n2. Login\nEnter 1 or 2: ").strip()
+
+        if choice == "1":
+            username = input("Enter new username to sign up: ").strip().lower()
+            sign_up(username)
+        elif choice == "2":
+            login()
         else:
-            print("No user found. Please sign up first.")
-            exit()  # Exit the program if the user does not exist
-    else:
-        print("Invalid option. Exiting...")
+            print("Invalid input. Exiting.")
+    except Exception as e:
+        logging.error(f"Main loop error: {e}")
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    print("Starting main execution...")
     main()

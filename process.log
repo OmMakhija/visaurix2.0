@@ -112,3 +112,81 @@
 2024-11-19 10:57:36,325 - INFO - Using device: cpu
 2024-11-19 10:57:36,347 - INFO - Model loaded from D:/DeepLearning-Project (virtual-env)/DeepfakeDetection/models/best_model.pth
 2024-11-19 10:57:36,347 - INFO - Best validation accuracy: 70.05%
+2025-04-17 21:40:31,385 - INFO - Found 10 WAV files in 'Data\OmMakhija'.
+2025-04-17 21:40:51,275 - INFO - Successfully read file: sample_3.wav with sample rate: 16000
+2025-04-17 21:40:51,275 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,288 - INFO - Successfully read file: sample_4.wav with sample rate: 16000
+2025-04-17 21:40:51,288 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,288 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,291 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,291 - INFO - Successfully read file: sample_10.wav with sample rate: 16000
+2025-04-17 21:40:51,291 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,291 - INFO - Successfully read file: sample_2.wav with sample rate: 16000
+2025-04-17 21:40:51,291 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,291 - INFO - Successfully read file: sample_1.wav with sample rate: 16000
+2025-04-17 21:40:51,291 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,291 - INFO - Successfully read file: sample_9.wav with sample rate: 16000
+2025-04-17 21:40:51,291 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:40:51,410 - WARNING - No features were loaded. Please check your audio files.
+2025-04-17 21:42:32,903 - INFO - Found 10 WAV files in 'Data\OmMakhija'.
+2025-04-17 21:42:49,283 - INFO - Successfully read file: sample_5.wav with sample rate: 16000
+2025-04-17 21:42:49,283 - INFO - Successfully read file: sample_2.wav with sample rate: 16000
+2025-04-17 21:42:49,283 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,283 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,283 - INFO - Successfully read file: sample_7.wav with sample rate: 16000
+2025-04-17 21:42:49,286 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,286 - INFO - Successfully read file: sample_10.wav with sample rate: 16000
+2025-04-17 21:42:49,286 - INFO - Successfully read file: sample_6.wav with sample rate: 16000
+2025-04-17 21:42:49,286 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,286 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,286 - INFO - Successfully read file: sample_3.wav with sample rate: 16000
+2025-04-17 21:42:49,286 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,286 - INFO - Successfully read file: sample_1.wav with sample rate: 16000
+2025-04-17 21:42:49,288 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,288 - INFO - Successfully read file: sample_4.wav with sample rate: 16000
+2025-04-17 21:42:49,288 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,299 - INFO - Successfully read file: sample_9.wav with sample rate: 16000
+2025-04-17 21:42:49,299 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,299 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:42:49,436 - WARNING - No features were loaded. Please check your audio files.
+2025-04-17 21:47:50,056 - INFO - Found 10 WAV files in 'Data\OmMakhija'.
+2025-04-17 21:48:08,265 - INFO - Successfully read file: sample_10.wav with sample rate: 16000
+2025-04-17 21:48:08,265 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,265 - INFO - Successfully read file: sample_7.wav with sample rate: 16000
+2025-04-17 21:48:08,265 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,277 - INFO - Successfully read file: sample_1.wav with sample rate: 16000
+2025-04-17 21:48:08,277 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - INFO - Successfully read file: sample_8.wav with sample rate: 16000
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - INFO - Successfully read file: sample_9.wav with sample rate: 16000
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - INFO - Successfully read file: sample_3.wav with sample rate: 16000
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,280 - INFO - Successfully read file: sample_2.wav with sample rate: 16000
+2025-04-17 21:48:08,280 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:48:08,408 - WARNING - No features were loaded. Please check your audio files.
+2025-04-17 21:52:16,134 - INFO - Found 10 WAV files in 'Data\OmMakhija'.
+2025-04-17 21:52:29,013 - INFO - Successfully read file: sample_10.wav with sample rate: 16000
+2025-04-17 21:52:29,013 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,015 - INFO - Successfully read file: sample_1.wav with sample rate: 16000
+2025-04-17 21:52:29,015 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,034 - INFO - Successfully read file: sample_2.wav with sample rate: 16000
+2025-04-17 21:52:29,034 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,036 - INFO - Successfully read file: sample_3.wav with sample rate: 16000
+2025-04-17 21:52:29,036 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,054 - INFO - Successfully read file: sample_4.wav with sample rate: 16000
+2025-04-17 21:52:29,054 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,056 - INFO - Successfully read file: sample_5.wav with sample rate: 16000
+2025-04-17 21:52:29,056 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,068 - INFO - Successfully read file: sample_7.wav with sample rate: 16000
+2025-04-17 21:52:29,069 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,069 - INFO - Successfully read file: sample_6.wav with sample rate: 16000
+2025-04-17 21:52:29,069 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,086 - INFO - Successfully read file: sample_8.wav with sample rate: 16000
+2025-04-17 21:52:29,087 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,087 - INFO - Successfully read file: sample_9.wav with sample rate: 16000
+2025-04-17 21:52:29,088 - ERROR - Error extracting features: module 'python_speech_features' has no attribute 'mfcc'
+2025-04-17 21:52:29,211 - WARNING - No features were loaded. Please check your audio files.

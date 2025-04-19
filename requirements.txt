@@ -3,6 +3,7 @@ librosa==0.10.2.post1
 matplotlib==3.9.2
 numpy==2.0.2
 python_speech_features==0.6
+scikit-learn==1.6.1
 scipy==1.14.1
 sounddevice==0.5.1
 torch==2.4.1
